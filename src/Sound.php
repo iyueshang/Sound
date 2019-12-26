@@ -29,7 +29,6 @@ class Sound
         }catch (Exception $e) {
             throw new SocketException($e->getMessage(), $e->getCode(), $e);
         }
-
         socket_close($socket);
         return $str;
     }
@@ -37,7 +36,7 @@ class Sound
     //暂停播放
     public function stop($snlist)
     {
-        $cmd['cmd'] = "FORCESTOP";
+        $cmd['cmd'] = 'FORCESTOP';
         $cmd['snlist'] = $snlist;
         return $this->send(json_encode($cmd));
     }
@@ -46,7 +45,7 @@ class Sound
     public function vol($sn, $vol)
     {
         $cmd['vol'] = $vol;
-        $cmd['mode'] = "1003";
+        $cmd['mode'] = '1003';
         $cmd['sn'] = $sn;
         return $this->send(json_encode($cmd));
     }
@@ -61,7 +60,7 @@ class Sound
     //播放音乐
     public function play($snlist, $fileList)
     {
-        $cmd['cmd'] = "PLAYOFF";
+        $cmd['cmd'] = 'PLAYOFF';
         $cmd['filelist'] = $fileList;
         $cmd['sn'] = $snlist;
         return $this->send(json_encode($cmd));

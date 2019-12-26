@@ -1,0 +1,28 @@
+{
+    "name": "yueshang\/sound",
+    "description": "IP Sound Post",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "yueshang",
+            "email": "81280@163.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.5",
+        "ext-sockets": "*",
+      "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yueshang\\Sound\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Yueshang\\Sound\\ServiceProvider"
+            ]
+        }
+    }
+}

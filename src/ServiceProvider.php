@@ -8,9 +8,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     public function register()
     {
-        $this->app->singleton(Sound::class, function(){
-            return new Sound(config('services.sound.ip'),config('services.sound.port'));
-
+        $this->app->singleton(Sound::class, function () {
+            return new Sound(config('services.sound.ip'), config('services.sound.port'));
         });
 
         $this->app->alias(Sound::class, 'sound');

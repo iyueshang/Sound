@@ -21,16 +21,12 @@ class Sound
     protected function send($cmd)
     {
         $socket = socket_create(AF_INET,SOCK_STREAM,SOL_TCP);
-        $res = socket_connect($socket,$this->ip,$this->port);
-        $result = socket_write($socket,$cmd);
-
-        try {
-            $str = socket_read($socket,1024);
-        }catch (Exception $e) {
-            throw new SocketException($e->getMessage(), $e->getCode(), $e);
-        }
+        $conn = socket_connect($socket,$this->ip,$this->port);
+        $write = socket_write($socket,$cmd);
+        $read = socket_read($socket,1024);
         socket_close($socket);
-        return $str;
+        $read = json_decode(substr($read, strpos($read,"{")), true);
+        return $read['res'];
     }
 
     //暂停播放
@@ -86,6 +82,33 @@ class Sound
 
     //清空当前队列， 添加新的队列到播放列表
     public function  clearQueueAnewAdd($snlist, $fileList)
+    {
+        $cmd['cmd'] = "PLAYOFF_START";
+        $cmd['snlist'] = $snlist;
+        $cmd['filelist'] = $fileList;
+        return $this->send(json_encode($cmd));
+    }
+
+    //追加 缓存队列
+    public function addCacheQueu($snlist, $fileList)
+    {
+        $cmd['cmd'] = "PRECACHE";
+        $cmd['snlist'] = $snlist;
+        $cmd['filelist'] = $fileList;
+        return $this->send(json_encode($cmd));
+    }
+
+    //追加到更新文件队列
+    public function updateFileQueue($snlist, $fileList)
+    {
+        $cmd['cmd'] = "PURGEFILE";
+        $cmd['snlist'] = $snlist;
+        $cmd['filelist'] = $fileList;
+        return $this->send(json_encode($cmd));
+    }
+
+    //停止且清空当前队列  添加新的队列到播放列表
+    public function clearQueueAddQueue($snlist, $fileList)
     {
         $cmd['cmd'] = "PLAYOFF_START";
         $cmd['snlist'] = $snlist;
